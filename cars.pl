@@ -1,21 +1,15 @@
-% ============================================================
-%  ARTI 303 - Lab 6  |  Task 1 - Colour Matters
-%  Suggestion system for buying cars / trucks
-% ============================================================
+% ARTI 303 - Lab 6 - Prolog Programming
 
-% car(Model, Price, Age, Colour, Mileage).
-car(chrysler, 130000, 3, red, 12000).
-car(ford, 90000, 4, gray, 25000).
-car(datsun, 80000, 1, red, 30000).
 
-% truck(Model, Price, Age, Colour, Mileage).
-truck(ford, 80000, 6, blue, 8000).
-truck(datsun, 50000, 5, orange, 20000).
-truck(toyota, 25000, 2, black, 25000).
+% ---- facts: car(Model, Price, Age, Colour, Mileage) -------------
+car(chrysler, 130000, 3, red,   12000).
+car(ford,      90000, 4, gray,  25000).
+car(datsun,    80000, 1, red,   30000).
 
-% ------------------------------------------------------------
-%  Original rule (kept as it is): can_buy(Cost)
-% ------------------------------------------------------------
+truck(ford,    80000, 6, blue,   8000).
+truck(datsun,  50000, 5, orange,20000).
+truck(toyota,  25000, 2, black, 25000).
+
 can_buy(Cost) :-
     car(Model, C1, _, _, _),
     C1 < Cost,
@@ -28,12 +22,11 @@ can_buy(Cost) :-
     write('With '), write(C2),
     write(' you can purchase the truck '), write(Model), nl.
 
-% ------------------------------------------------------------
-%  New rule: can_buy(Cost, Colour)
-%  Suggests only vehicles of the given colour that are
-%  cheaper than the budget. Colour is matched in the
-%  4th position of car/5 and truck/5.
-% ------------------------------------------------------------
+% =================================================================
+% LAB TASK 1 - MODEL ANSWER  (also consider the colour)
+
+% can_buy(Cost, Colour): suggests only vehicles of the given colour
+% that are cheaper than the budget. Colour is the 4th argument.
 can_buy(Cost, Colour) :-
     car(Model, C1, _, Colour, _),
     C1 < Cost,
@@ -48,27 +41,21 @@ can_buy(Cost, Colour) :-
     write(' you can purchase the '), write(Colour),
     write(' truck '), write(Model), nl.
 
-% ============================================================
-%  Test queries and results
-% ============================================================
-
+% =================================================================
+% Test queries and results
 /*
----------- Colour that exists: red ----------
 ?- can_buy(100000, red).
 With 80000 you can purchase the red car datsun
 true ;
 false.
 
----------- Colour that exists: blue ----------
 ?- can_buy(100000, blue).
 With 80000 you can purchase the blue truck ford
 true.
 
----------- Colour that does not exist: green ----------
 ?- can_buy(100000, green).
 false.
 
----------- Original rule still works ----------
 ?- can_buy(100000).
 With 90000 you can purchase the car ford
 true ;
